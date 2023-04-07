@@ -7,16 +7,16 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 class Car:  # Note that parens are optional if not inheriting from another class
-  def __init__(self, year, make, model, color):
-    self.year = year
+  def __init__(self, make, color, model, year):
     self.make = make
-    self.model = model
     self.color = color
+    self.model = model
+    self.year = year
 
 cars = [ # this cars points to below where {'cars': cars}... the blue one
-  Car(1969, 'Camaro', 'R/S Zl1', 'racing yellow'),
-  Car(1971, 'Torino', '429 Cobra Jet', 'supersonic red'),
-  Car(1964, 'Aston Martin', 'DB5', 'Silver Birch')
+  Car('Camaro', 'racing yellow', 'R/S Zl1', 1969),
+  Car('Torino', 'supersonic red', '429 Cobra Jet', 1971),
+  Car('Aston Martin', 'Silver Birch', 'DB5', 1964)
 ]
 
 def cars_index(request):
