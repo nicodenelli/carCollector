@@ -15,8 +15,8 @@ class Car:  # Note that parens are optional if not inheriting from another class
 
 cars = [ # this cars points to below where {'cars': cars}... the blue one
   Car(1969, 'Camaro', 'R/S Zl1', 'racing yellow'),
-  Car('Sachi', 'tortoise shell', 'diluted tortoise shell', 0),
-  Car('Raven', 'black tripod', '3 legged cat', 4)
+  Car(1971, 'Torino', '429 Cobra Jet', 'supersonic red'),
+  Car(1964, 'Aston Martin', 'DB5', 'Silver Birch')
 ]
 
 def cars_index(request):
