@@ -7,3 +7,4 @@ urlpatterns = [
     # In this case '' represents the root route localHost:8000
     path('', include('main_app.urls')),
 ]
+ 
