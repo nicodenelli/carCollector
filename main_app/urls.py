@@ -7,4 +7,6 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     # route for cars index
     path('cars/', views.cars_index, name='index'),
+    # cars details (show page)
+    path('cars/<int:car_id>/', views.cars_detail, name='detail'),
 ]

@@ -25,6 +25,9 @@ def cars_index(request):
 #   Car('Aston Martin', 'Silver Birch', 'DB5', 1964)
 # ]
 
+def cars_detail(request, car_id):
+   car = Car.objects.get(id=car_id)
+   return render(request, 'cars/detail.html', {'car': car})
 
 
 # Define the home view
