@@ -1,12 +1,28 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Add the following import
 from django.http import HttpResponse
 
 from .models import Car
+
+class CarCreate(CreateView):
+   model = Car
+   fields = '__all__'
+
+
+class CarUpdate(UpdateView):
+	model = Car
+	# disallow the make as input on the form, so no one can update the make
+	fields = ['make', 'color', 'model', 'year', 'link']
+	
+class CarDelete(DeleteView):
+	model = Car
+	success_url = '/cars' # <- since we can't redirect to a detail page of a car we deleted
+
+
 
 def cars_index(request):
   cars = Car.objects.all() # finding all the cars from the db

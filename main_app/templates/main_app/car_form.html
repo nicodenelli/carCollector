@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!-- if we are creating a Car, object will be undefined
+if we are updateing a Car, the object will be the Car we are udating -->
+<!-- object comes from the CarUpdate CBV view -->
+
+{% if object %}
+    <h1>Edit <span class="teal-text">{{object.make}}</span></h1>
+{% else %}
+    <h1>Add A Car!</h1>
+{% endif %}
+
+
+
+<!-- Leave the action empty makes the form post to the same url 
+as what is used to display cars/create -->
+
+<form action="" method="POST">
+	<!-- security purpose we include 
+	csrf token, cross site request forgery token, protects our forms -->
+	{% csrf_token %}
+	<table>
+		<!-- we get a form variable that is from our CBV CarCreate -->
+		{{ form.as_table}}
+	</table>
+<button type="submit" class="btn">Add Car</button>
+</form>
+	
+{% endblock content %}

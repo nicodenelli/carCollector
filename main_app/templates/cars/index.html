@@ -5,11 +5,12 @@
 <h1 class="index-title indigo accent-1">The Car Collection</h1>
 
 {% for car in cars %}
+<div class="card">
 <div class="card-div">
-  <a href="/cars/{{ car.id }}">
+  <a href="{% url 'detail' car.id %}">
   <div class="card col s8">
     <div class="card-content imgdiv">
-      <span class="card-title">{{ car.make }}</span><img class="responsive-img" src="{% static 'car/images/'%}{{car.make}}.png">
+      <span class="card-title">{{ car.make }}</span><img class="responsive-img" src="{{car.link}}" alt=""/>
       <p>Color: {{ car.color }}</p>
       <p>Model: {{ car.model }}</p>
       {% if 1980 > car.year %}
@@ -21,6 +22,9 @@
   </div>
   </a>
 </div>
+</div>
 {% endfor %}
 
 {% endblock %}
+
+<!-- <img class="responsive-img" src="{% static 'car/images/'%}{{car.make}}.png" alt=""/> -->

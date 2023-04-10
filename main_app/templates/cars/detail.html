@@ -2,11 +2,12 @@
 {% block content %}
 {% load static %}
 
-<h1>Car Details</h1>
+<h1 class="index-title indigo accent-1">Car Details</h1>
+
 
 <div class="card">
   <div class="card-content">
-    <span class="card-title">{{ car.make }}</span>
+    <span class="card-title">{{ car.make }}</span><img class="responsive-img" src="{{car.link}}" alt=""/>
     <p>Color: {{ car.color }}</p>
     <p>Model: {{ car.model }}</p>
     {% if 1980 > car.year %}
@@ -16,5 +17,11 @@
     {% endif %}
   </div>
 </div>
+
+<div class="card-action">
+    <a href="{% url 'cars_update' car.id%}">Edit</a>
+    <a href="{% url 'cars_delete' car.id%}">Delete</a>
+</div>
+
 
 {% endblock %}
