@@ -5,26 +5,68 @@ body {
     min-height: 100vh;
     flex-direction: column;
   }
+
+  nav ul a {
+    color: black;
+  }
+
+  nav .brand-logo {
+    color: black;
+  }
   
   main {
     flex: 1 0 auto;
   }
-  
-  footer.page-footer {
-    padding-top: 0;
-    text-align: right;
+
+  .about-img {
+    width: 75%;
+    height: 75%;
   }
 
-  .imgspan{
+  .about-img-div {
     display: flex;
     flex-direction: column;
+    align-items: center;
+  }
+
+  .imgdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imgdiv > img {
+    width: 50%;
+    height: 50%;
   }
 
   .text {
     color: red;
   }
 
-  .imgspan > img {
-    width: 200px;
-    height: 200px;
+  .index-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .row .col.s8 {
+    display: contents;
+    border-style: solid;
+  }
+
+  .page-footer {
+    color: black;
+  }
+
+  .page-footer {
+    background-color: #8c9eff;
+  }
+
+  footer.page-footer {
+    padding-top: 0;
+    text-align: right;
+  }
+
+
+

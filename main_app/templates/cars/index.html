@@ -2,12 +2,13 @@
 {% block content %}
 {% load static %}
 
-<h1>The Car Collection</h1>
+<h1 class="index-title indigo accent-1">The Car Collection</h1>
 
 {% for car in cars %}
+<div class="card-div">
   <div class="card col s8">
-    <div class="card-content imgspan">
-      <span class="card-title">{{ car.make }}</span><img class="responsive-img img" src="{% static 'car/images/'%}{{car.make}}.png">
+    <div class="card-content imgdiv">
+      <span class="card-title">{{ car.make }}</span><img class="responsive-img" src="{% static 'car/images/'%}{{car.make}}.png">
       <p>Color: {{ car.color }}</p>
       <p>Model: {{ car.model }}</p>
       {% if 1980 > car.year %}
@@ -17,6 +18,7 @@
       {% endif %}
     </div>
   </div>
+</div>
 {% endfor %}
 
 {% endblock %}
