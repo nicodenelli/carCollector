@@ -13,6 +13,6 @@ class Car(models.Model):
     # this function happens when our create form is submitted,
     # and CarsCreate CBV after it has handled the post request
     def get_absolute_url(self):
-        # path('cats/int:car_id>/'), views.cars_detail, name='detail'),
+        # path('car/int:car_id>/'), views.cars_detail, name='detail'),
         # self.id is referring to the car that was just created when you submit the form
         return reverse('detail', kwargs={'car_id': self.id})
