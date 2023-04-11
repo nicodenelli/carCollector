@@ -35,14 +35,8 @@ FILLS = (
 # One Car has Many Fillings, a Filling Belongs to a Car
 class Filling(models.Model):
     date = models.DateField('Filling Date')
-    # fill will be represented by a single letter (M)orning, (A)fternoon, (N)ight
-    # we set the dafualt value for fill to 'M'
     fill = models.CharField(max_length=1, choices=FILLS, default=FILLS[0][0])
-    # Create a car_id FK (Foreign Key)
-    # models. CASCADE, if we delete a car, delete its fillings as well
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
 
     def __str__(self):
-        # get_fill_display is automatically generated,
-        # on inputs that have choices parameter, see fill
         return f"{self.get_fill_display()} on {self.date}"
