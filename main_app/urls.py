@@ -13,4 +13,5 @@ urlpatterns = [
      # CBV expect the params to be int:pk (primary key) "The convention name"
     path('cars/<int:pk>/update/', views.CarUpdate.as_view(), name='cars_update'),
     path('cars/<int:pk>/delete/', views.CarDelete.as_view(), name='cars_delete'),
+    path('cars/<int:car_id>/add_filling/', views.add_filling, name='add_filling'),
 ]

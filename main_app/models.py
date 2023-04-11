@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse # kinda like redirect
+from datetime import date
 
 # Create your models here.
 class Car(models.Model):
@@ -9,6 +10,9 @@ class Car(models.Model):
     year = models.IntegerField()
     link = models.URLField(max_length=300, default="Enter Car URL Here")
 
+    def filled_for_week(self):
+        return self.filling_set.filter(date=date.today()).count() >= len(FILLS)
+
 
     # this function happens when our create form is submitted,
     # and CarsCreate CBV after it has handled the post request
@@ -16,3 +20,29 @@ class Car(models.Model):
         # path('car/int:car_id>/'), views.cars_detail, name='detail'),
         # self.id is referring to the car that was just created when you submit the form
         return reverse('detail', kwargs={'car_id': self.id})
+    
+    def __str__(self):
+        return f"{self.make}"
+    
+
+FILLS = (
+    ('M', 'Morning'),
+    ('A', 'Afternoon'),
+    ('N', 'Night'),
+)
+# select menu ^
+
+# One Car has Many Fillings, a Filling Belongs to a Car
+class Filling(models.Model):
+    date = models.DateField('Filling Date')
+    # fill will be represented by a single letter (M)orning, (A)fternoon, (N)ight
+    # we set the dafualt value for fill to 'M'
+    fill = models.CharField(max_length=1, choices=FILLS, default=FILLS[0][0])
+    # Create a car_id FK (Foreign Key)
+    # models. CASCADE, if we delete a car, delete its fillings as well
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+
+    def __str__(self):
+        # get_fill_display is automatically generated,
+        # on inputs that have choices parameter, see fill
+        return f"{self.get_fill_display()} on {self.date}"

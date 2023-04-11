@@ -1,5 +1,5 @@
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -7,6 +7,25 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponse
 
 from .models import Car
+
+from .forms import FillingForm
+
+# car_id matches the url
+# path('cars/<int:car_id>/add_filling/' 
+def add_filling(request, car_id):
+	# create a modelForm instance using the information from the post request
+	# request.POST is like req.body
+	form = FillingForm(request.POST)
+	# validate the form
+	if form.is_valid():
+		# don't want to save it until we add the car_id to the feeding
+		new_filling = form.save(commit=False)
+		# tying the car to the filling
+		# defining the FK
+		new_filling.car_id = car_id
+		new_filling.save()
+		# import redirect on the top line from django.shortcuts
+	return redirect('detail', car_id=car_id)
 
 class CarCreate(CreateView):
    model = Car
@@ -43,7 +62,9 @@ def cars_index(request):
 
 def cars_detail(request, car_id):
    car = Car.objects.get(id=car_id)
-   return render(request, 'cars/detail.html', {'car': car})
+   # creating a form (instance) from my FillingForm class
+   filling_form = FillingForm()
+   return render(request, 'cars/detail.html', {'car': car, 'filling_form': filling_form})
 
 
 # Define the home view
