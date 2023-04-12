@@ -28,11 +28,11 @@
     <form action="{% url 'add_filling' car.id %}" method="POST">
 		{% csrf_token %}
 		{{ filling_form.as_p }}
-		<input type="submit" class="btn" value="Add Filling">
+		<input type="submit" class="btn" value="Add Fuel">
 	</form>
   <br>
   {% if car.filled_for_week %}
-    <div class="card-panel indigo accent-1 center-align">{{car.make}} has been filled all fuel for the week</div>
+    <div class="card-panel indigo accent-1 center-align">{{car.make}} has been fueled for the week</div>
   {% else %}
     <div class="card-panel red-text center-align">{{car.make}} might need a re-fuel...</div>
   {% endif %}
