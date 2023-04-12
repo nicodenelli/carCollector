@@ -3,12 +3,24 @@ from django.urls import reverse # kinda like redirect
 from datetime import date
 
 # Create your models here.
+class Accs(models.Model):
+    name = models.CharField(max_length=100)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('accss_detail', kwargs={'pk': self.id})
+
+
 class Car(models.Model):
     make = models.CharField(max_length=100)
     color = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     link = models.URLField(max_length=300, default="Enter Car URL Here")
+    accss = models.ManyToManyField(Accs)
 
     def filled_for_week(self):
         return self.filling_set.filter(date=date.today()).count() >= len(FILLS)

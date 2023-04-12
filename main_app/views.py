@@ -2,13 +2,24 @@
 from django.shortcuts import render, redirect
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 
 # Add the following import
 from django.http import HttpResponse
 
-from .models import Car
+from .models import Car, Accs
 
 from .forms import FillingForm
+
+# the arguments for the commands comes from our urls.py
+# 'cars/<int:car_id>/assoc_accs/<int:accs_id>/'
+def assoc_accs(request, car_id, accs_id):
+	Car.objects.get(id=car_id).accss.add(accs_id)
+
+	# One line version of below^
+	# car + Car.objects.get(id=car_id)
+	# car.accss.add(accs_id)
+	return redirect('detail', car_id=car_id)
 
 # car_id matches the url
 # path('cars/<int:car_id>/add_filling/' 
@@ -29,7 +40,7 @@ def add_filling(request, car_id):
 
 class CarCreate(CreateView):
    model = Car
-   fields = '__all__'
+   fields = ['make', 'color', 'model', 'year']
 
 
 class CarUpdate(UpdateView):
@@ -45,7 +56,7 @@ class CarDelete(DeleteView):
 
 def cars_index(request):
   cars = Car.objects.all() # finding all the cars from the db
-  return render(request, 'cars/index.html', { 'cars': cars })# <- the blue one
+  return render(request, 'cars/index.html', {'cars': cars})# <- the blue one
 
 # class Car:  # Note that parens are optional if not inheriting from another class
 #   def __init__(self, make, color, model, year):
@@ -63,8 +74,14 @@ def cars_index(request):
 def cars_detail(request, car_id):
    car = Car.objects.get(id=car_id)
    # creating a form (instance) from my FillingForm class
+   accss_car_doesnt_have = Accs.objects.exclude(id__in = car.accss.all().values_list('id'))
+
    filling_form = FillingForm()
-   return render(request, 'cars/detail.html', {'car': car, 'filling_form': filling_form})
+   return render(request, 'cars/detail.html', {
+	   'car': car, 
+	   'filling_form': filling_form,
+	   'accss': accss_car_doesnt_have
+	   })
 
 
 # Define the home view
@@ -76,3 +93,21 @@ def about(request):
     # django is configured to know automatically
     # to look inside of a template's folder for the html files
     return render(request, 'about.html')
+
+class AccsList(ListView):
+	model = Accs
+
+class AccsDetail(DetailView):
+	model = Accs
+
+class AccsCreate(CreateView):
+	model = Accs
+	fields = '__all__'
+
+class AccsUpdate(UpdateView):
+	model = Accs
+	fields = ['name', 'color']
+
+class AccsDelete(DeleteView):
+	model = Accs
+	success_url = '/accss/'

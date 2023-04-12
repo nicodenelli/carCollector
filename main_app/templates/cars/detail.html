@@ -52,6 +52,49 @@
   </div>
 </div>
 
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ car.make }}'s Accessories</h3>
+    {% if car.accss.count %}
+      {% for accs in car.accss.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ accs.color }}">{{ accs.color }}</span> {{ accs.name }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Accessories :(</h5>
+    {% endif %}
+  </div>
+  <!-- Available toys will come after this line -->
+  <div class="col s6">
+    <h3>Available Accessories</h3>
+    {% if accss.count %}
+      {% for accs in accss.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ accs.color }}">{{ accs.color }}</span> {{ accs.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_accs' car.id accs.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{car.make}} Already Has All Accessories Available</h5>
+    {% endif %}
+  </div>
+</div>
+
 <script>
 
 	const dateEl = document.querySelector('#id_date');
