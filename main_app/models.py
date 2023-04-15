@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse # kinda like redirect
 from datetime import date
 
@@ -20,6 +21,7 @@ class Car(models.Model):
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     link = models.URLField(max_length=300, default="Enter Car URL Here")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     accss = models.ManyToManyField(Accs)
 
     def filled_for_week(self):
@@ -35,6 +37,14 @@ class Car(models.Model):
     
     def __str__(self):
         return f"{self.make}"
+    
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for car_id: {self.car_id} @{self.url}"
+
     
 
 FILLS = (

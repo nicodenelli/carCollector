@@ -7,9 +7,40 @@ from django.views.generic import ListView, DetailView
 # Add the following import
 from django.http import HttpResponse
 
-from .models import Car, Accs
+import uuid
+import boto3
+from .models import Car, Accs, Photo
+from botocore.exceptions import ClientError
 
 from .forms import FillingForm
+
+BUCKET = 'carcollector-sei'
+S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
+
+
+def add_photo(request, car_id):
+	# photo-file will be the "name" attribute on the <input name='photo-file' type='file'>
+	photo_file = request.FILES.get('photo-file', None)
+	if photo_file:
+		# setup the aws client 
+		s3 = boto3.client('s3')
+		# Make a unique name to store the photo			# franklin.png
+														# photo_file.name.rfind('.'): this gets us the file exstension .png
+			 # store the file in a catcollector folder/randomnumber + the file name with the extension
+		key = 'car/' + uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+		try:
+			s3.upload_fileobj(photo_file, BUCKET, key)
+			# build the url string of where it is hosted to store db
+			url = f"{S3_BASE_URL}{BUCKET}/{key}"
+			# add it to the db
+			Photo.objects.create(url=url, car_id=car_id)
+		except ClientError as e:
+			print(e, " error from aws!")
+		
+	return redirect('detail', car_id=car_id)
+
+
+
 
 # the arguments for the commands comes from our urls.py
 # 'cars/<int:car_id>/assoc_accs/<int:accs_id>/'
@@ -39,8 +70,11 @@ def add_filling(request, car_id):
 	return redirect('detail', car_id=car_id)
 
 class CarCreate(CreateView):
-   model = Car
-   fields = ['make', 'color', 'model', 'year']
+	model = Car
+	fields = ['make', 'color', 'model', 'year']
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		return super().form_valid(form)
 
 
 class CarUpdate(UpdateView):
@@ -87,7 +121,7 @@ def cars_detail(request, car_id):
 # Define the home view
 # def home(request):
 #   return render(request, 'cars/index.html', { 'cars': car })
-#   return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\</h1>')
+
 
 def about(request):
     # django is configured to know automatically
